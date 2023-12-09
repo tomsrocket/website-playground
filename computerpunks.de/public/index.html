@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap" rel="stylesheet">
+
+    <title>datanerds.org</title>
+    <style>
+      body {
+        margin: 0;
+        color: #fefefe;
+        background-color:#313134;
+      }
+
+      .center-me {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        text-align:center;
+      }
+      .center-me img {
+        width:400px;
+        display:block;
+        margin:auto
+      }
+      .name {
+        margin-top:10px;
+        font-family: 'Oswald', sans-serif;
+        font-size:95px;
+      }
+      .domain {
+        font-family: 'Poppins', sans-serif;
+        font-size:60px;
+        margin-top:-20px;
+      }
+
+      .cols {background:linear-gradient(
+        #ffeeaa 0%,
+        #ff2288 20%,
+        #3ee 70%,
+        #18f 80%,
+        #fea 100%
+      );
+      background-clip:text;
+      -webkit-background-clip:text;
+      color:transparent;
+      animation: rainbow 500s linear infinite;
+    }
+     @keyframes rainbow {
+       100% {
+         background-position: 0 30em;
+       }
+     }
+      @media (max-width: 500px) {
+          .center-me img {width:300px}
+          .name {font-size:70px;}
+          .domain {font-size:50px;}
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="center-me">
+      <div class="div">
+      <img src="computerpunks1.png" alt="logo" class="logo">
+
+      <!-- div class="name">Data<span class="cols">Nerds</span></div>
+      <div class="domain">datanerds.org</div -->
+    </div>
+
+    </div>
+
+  </body>
+</html>
