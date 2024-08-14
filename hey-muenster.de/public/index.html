@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!-- Bootstrap Icon library -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" integrity="sha384-He3RckdFB2wffiHOcESa3sf4Ida+ni/fw9SSzAcfY2EPnU1zkK/sLUzw2C5Tyuhj" crossorigin="anonymous">
+
+    <title>Toms Regenradar</title>
+    <style>
+        .slidecontainer {
+  width: 100%; /* Width of the outside container */
+}
+
+/* The slider itself */
+.slider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 25px; /* Specified height */
+  background: #d3d3d3; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+#cb {width:100%}
+.rainradar {max-width:600px!important}
+.btn {margin: 2px }
+</style>
+  </head>
+  <body>
+        <header class="bg-dark text-white d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+          <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none">
+            <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
+            <span class="fs-4 text-white">Regenradar Rückblick</span>
+          </a>
+
+          <ul class="nav nav-pills">
+            <li class="nav-item"><a href="https://www.input23.de/impressum.html" class="nav-link text-white">Impressum</a></li>
+            <li class="nav-item"><a href="https://www.input23.de/datenschutz.html" class="nav-link text-white">Datenschutz</a></li>
+          </ul>
+        </header>
+
+
+    <div class="container rainradar">
+      <div class="row">
+        <div class="col">
+            <img id="cb" src="" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+            <div class="slidecontainer">
+                <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+                <div id="demo"></div>
+            </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+            <a href="#" class="btn btn-dark" onclick="setCity('nrw');return false;">NRW</a>
+            <a href="#" class="btn btn-dark" onclick="setCity('de');return false;">DE</a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col" id="datebuttons">
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script>
+
+
+    // ja ja, global variables
+    var kweek = 0
+    var filenr = 0
+    var imgpath = ""
+    var city = "de"
+    var today = 0
+
+    // create the date buttons that call function init_vars($date)
+    const datebuttons = document.getElementById("datebuttons")
+    var now = new Date()
+    for (var ind = 0;ind<10; ind++) {
+        const nowIso = now.toISOString()
+        const html = '<a href="#" class="btn btn-secondary" onclick="init_vars(\''
+            + nowIso +'\');return false;">'+nowIso.substring(0,10)+'</a>'
+        datebuttons.innerHTML += html;
+        now.setDate(now.getDate() - 1);
+    }
+
+    // init all global variables for the current date
+    function init_vars(dateIso) {
+        const date = new Date(dateIso)
+        const formattedDate = dateIso.replace(/[:T-]/g, '');
+        today = formattedDate.substring(0, 8)
+        const shortDate = formattedDate.substring(0, 12)
+        const rounded5 = round5(shortDate)
+
+        kweek = getWeek(date)
+        imgpath = "regen/img/"+('00'+kweek).slice(-2)+"/"
+        filenr = rounded5
+
+        console.log("INIT ", kweek, date, formattedDate, shortDate, rounded5 )
+    }
+
+    init_vars(new Date().toISOString())
+
+
+    // helper functions
+    function setCity(cc) {
+        city = cc
+    }
+    function round5(x) {
+        return Math.floor(x / 5) * 5;
+    }
+    function get_filename(filee) {
+        return imgpath + "regen-"+city+"-" + filee + ".jpg"
+    }
+
+    function preload_image(im_url) {
+        let img = new Image();
+        img.src = im_url;
+    }
+
+    function fixtime(mytime) {
+        if ((mytime % 100) >= 60) {
+            mytime = "" + mytime.toString().substring(0, 10) + "55"
+        }
+        if ((mytime % 10000) > 2355) {
+            mytime = "" + mytime.toString().substring(0, 8) + "2355"
+        }
+        return mytime
+    }
+
+    // change the image every xxx milliseconds
+    function cycle( dummy = "") {
+
+
+        // Set your image
+        // console.log("file", filenr)
+        document.querySelector('#cb').src = get_filename(filenr);
+
+        // If you reach the end of the array set index to zero
+        // otherwise increment it
+
+        filenr = filenr -5;
+        filenr = fixtime(filenr)
+        if (filenr % 100 == 0) {
+            console.log("TIMEVAL", filenr.toString(), filenr.toString().substring(8))
+            document.getElementById("myRange").value = filenr.toString().substring(8) / 24
+        }
+
+        preload_image(get_filename(filenr))
+        setTimeout(cycle, 200, filenr);
+    }
+
+    cycle();
+
+
+    var slider = document.getElementById("myRange");
+    var output = document.getElementById("demo");
+
+    // Update the current slider value (each time you drag the slider handle)
+    slider.oninput = function() {
+        var zero = ""
+        var temptime = Math.floor( (this.value * 24) / 5) * 5
+        if (temptime < 1000) {
+            zero = "0"
+        }
+        var mytime = "" + today + "" +  zero + temptime
+        mytime = fixtime(mytime)
+
+
+        filenr = mytime
+        output.innerHTML = mytime;
+    }
+
+    function getWeek(d){
+        // Quelle: https://itbalance.de/javascript-und-die-kalenderwoche/
+        if (!d) {
+            return 0;
+        }
+
+        let date;
+        if (d instanceof Date) {
+            date = new Date(d.getTime());
+        } else {
+            // deliver JSON Date
+            const x = d.split('-');
+            date = new Date(x[0], x[1] - 1, x[2], 11); // 11 = independent of time zone date switch
+        }
+        // january, 4th is always in week 1.
+        const week1 = new Date(date.getFullYear(), 0, 4, 11, 0, 0, 0);
+        const week1Monday = new Date(week1.getTime());
+        // get the monday of the first week
+        week1Monday.setDate(week1Monday.getDate() - (week1Monday.getDay() || 7) + 1);
+
+        // check, if cal week is equal to last week of past year
+        if (week1Monday.getTime() > date.getTime()) {
+            if (week1Monday.getFullYear() === week1.getFullYear()) {
+                return getWeek(new Date(week1Monday.getFullYear() - 1, 11, 31, 11));
+            }
+            return getWeek(new Date(week1Monday.getFullYear(), 11, 31, 11));
+        }
+
+        const firstOfYear  = new Date(date.getFullYear(), 0, 1, 11, 0, 0, 0);
+        const lastOfYear  = new Date(date.getFullYear(), 11, 31, 11, 0, 0, 0);
+
+        // check if current year is a leap year
+        const isLeap = date.getFullYear() % 4 === 0;
+
+        // check if current year has 53 weeks
+        const has53 = !isLeap && (firstOfYear.getDay() === 4 && lastOfYear.getDay() === 4)  ||
+            (isLeap && (firstOfYear.getDay() === 3 && lastOfYear.getDay() === 4 || firstOfYear.getDay() === 4 && lastOfYear.getDay() === 5));
+
+        const dateMonday = new Date(date.getTime());
+        dateMonday.setDate(dateMonday.getDate() - (dateMonday.getDay() || 7) + 1);
+
+        // round is needed due to summer time / winter time difference ends up in non integer calculation
+        const weekOffset= (dateMonday.getTime() - week1Monday.getTime()) / 1000 / 60 / 60 / 24;
+
+        const result =  1 + Math.round(weekOffset / 7);
+        if(result === 53 && !has53) {
+            return 1;
+        } else {
+            return result;
+        }
+    }
+
+</script>
+
+</body>
+</html>
+
