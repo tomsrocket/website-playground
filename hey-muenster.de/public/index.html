@@ -11,6 +11,8 @@
     <!-- Bootstrap Icon library -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" integrity="sha384-He3RckdFB2wffiHOcESa3sf4Ida+ni/fw9SSzAcfY2EPnU1zkK/sLUzw2C5Tyuhj" crossorigin="anonymous">
 
+    <link href="data:image/x-icon;base64,AAABAAEAEBAAAAEACABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAALzvMAAAMAAH9rJQB/bDEAbXVMAB2yRwDDlIIAPXlZAEprXABObFYAfot7AF2BeQDAVj8A1NTUALx8cQBof3MAYoZ2AMBbRQAxaFQAAhsSAMaelwCEiooAhXhDAIFhGgCCmoQAApTyAG9qPgDdk4gAZ458AJhDIwBuinkAlqutADdtYwBybzsAZHdTAAIDAQCOrgQANK5xAB2zQgBqeFYAdo58AHWbCwD79voA0NXPAH+OcwCfhDoAfpB5AHt2RwAKDQQACPTxAE5zWgBhh3EAfX1BAI2MbQBJdWkAf3xHALKMfgB2m5EAVXNaAH1fHgA2clgAMFU4AC1VQQB9h2gAdoV9AJhNJwAxXDsAhYZlADRWRACmrKgATG5VAAUOCAD8+/gACAsIAIePZQA0XE0AZ4JsADVjUAA6Z0EAX29GAH5eHABuZjQAS6ofADxkSgCAXhwAfWIfAGhtQAA8aE0AhH1LAGWQewBwhHsAgKCPAIKZlQBnkoEAbot+AEZiVgBXtNQAYXxSAIVnJQBFaFYAEyAaAHCSgQBcgXMAVoGFAGZ9ZwADOPAAwVU/ACNMMQBTblYAaH1wAGWFbQBKd18Aa4NnABIKBgB3e1gAU3ZTAD9jPwB4YiAAj38lADFpWgCtbl0AGcNrADdnVAB+XyAAgYBVAFGYRACGZhoAcIt2AEtdUQA8dFcAPE43ACszLwAaHBgAb5KLAD0tFAB6dT4ANFpJADerLQBre2IAS2xjACZHNQAEvfIAO2JGAH1dGwA7Z0MAsrKqAHtiIQCAmYUAAB8iAGSPegAkWT4Ac4F0AHWFbgAjLioAL1RBAFSBbABJaUkARG9SAHaHfQCEhl8Ag6OjAElsWwBtelcATW5YAI6tnQB9XRwAfV4fAK6ThQBqhnIAb2k3AINiGQA5YmIAaYp+AHJtOgBWemoAPG5ZAEJnVgABBAAAERwaAEJxUAC3UzwAiXhsAIyakgBLZ1YAcpN+AHl0PQCPNhQAYX9wAEJUOQBFdmgAPlpCAISQdQBzf1UAfl8aAF2JhQB3npYAf2EgAFh3YgBRhV8Ad4ZqACpaQwBmj44ARWtRAH+KZABUigwAnUosAAgFBABAdWYATXFRAA8xJACTuw0AfXtBAFuLegCsr60ASHVmAD9aQwA2Y0wAf5SCAH9kIQBniIMAbm4/AFmBVACGgVMA3t4jAG+OegBkcl0AdIh6AH+eoABZgWYARGpYADpMPgBtkYwAJzkzAICPdACBkHcAVGxVAElyZwAgIB8AO2BEAClNMABtZjEAfF8cAKYnFgBei4QAZ4eBAAXk0gCDgVQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFCq0agwR8kKAgpUcXqRBSFun4J211OR/mwk8ErgezR2TGG6D7zjGD8qsOb3sqLp4edUrRVdMkDpmej5dlnAumFKE1osfcVko4sXPa8fqLOnLM0bl7ba3XBUyyKJKJz+/wF/u12MQS9uMjm/RQzUGcp/ZfSkOPYj0ZfNasjYIBE98CorrJHSFlGegIrvOARtW3iNzaPUZACXC56OXoQuZ3BbTN0eJE2mBviBt0K68Gq12uYdOQJFTmk2rZOPh2FEvLTRYB7Oc0q93ROhhsMnw9nV7VVXahjFgI+YNnsOSIak7JjumxN0FjY+lpUmxVFRU8czx8fFsMN8DYgJQwRd+qgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=" rel="icon" type="image/x-icon" />
+
     <title>Toms Regenradar</title>
     <style>
         .slidecontainer {
@@ -37,6 +39,11 @@
 #cb {width:100%}
 .rainradar {max-width:600px!important}
 .btn {margin: 2px }
+.citybutton {margin-bottom: 5pt; }
+#demo {
+    background-color: #ccc;
+    font-weight: 300;
+}
 </style>
   </head>
   <body>
@@ -47,6 +54,7 @@
           </a>
 
           <ul class="nav nav-pills">
+            <li class="nav-item nav-link text-white">Size: <span id="size"></span></li>
             <li class="nav-item"><a href="https://www.input23.de/impressum.html" class="nav-link text-white">Impressum</a></li>
             <li class="nav-item"><a href="https://www.input23.de/datenschutz.html" class="nav-link text-white">Datenschutz</a></li>
           </ul>
@@ -56,6 +64,8 @@
     <div class="container rainradar">
       <div class="row">
         <div class="col">
+            <div id="demo" class="text-bg-secondary text-center fs-4"></div>
+
             <img id="cb" src="" />
         </div>
       </div>
@@ -63,14 +73,18 @@
         <div class="col">
             <div class="slidecontainer">
                 <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
-                <div id="demo"></div>
+                <div>
+                    <p class="float-start">00:00</p>
+                    <p class="float-end">24:00</p>
+                    <p class="text-center">12:00</p>
+                </div>
             </div>
         </div>
       </div>
       <div class="row">
         <div class="col">
-            <a href="#" class="btn btn-dark" onclick="setCity('nrw');return false;">NRW</a>
-            <a href="#" class="btn btn-dark" onclick="setCity('de');return false;">DE</a>
+            <a href="#" class="btn btn-outline-primary citybutton" onclick="setCity(this, 'nrw');return false;">NRW</a>
+            <a href="#" class="btn btn-outline-primary active citybutton" onclick="setCity(this, 'de');return false;">DE</a>
         </div>
       </div>
       <div class="row">
@@ -91,20 +105,38 @@
     var imgpath = ""
     var city = "de"
     var today = 0
+    const slider = document.getElementById("myRange");
+    const output = document.getElementById("demo");
+
+    // show the total directory size used by regenradar images
+    fetch('regen/dirsize.txt')
+        .then(response => response.text())
+        .then((data) => {
+            console.log(data)
+            document.getElementById("size").innerHTML=data
+        })
+
 
     // create the date buttons that call function init_vars($date)
     const datebuttons = document.getElementById("datebuttons")
     var now = new Date()
     for (var ind = 0;ind<10; ind++) {
         const nowIso = now.toISOString()
-        const html = '<a href="#" class="btn btn-secondary" onclick="init_vars(\''
-            + nowIso +'\');return false;">'+nowIso.substring(0,10)+'</a>'
+        const html = '<a href="#" class="btn btn-outline-secondary daybutton" onclick="init_vars(\''
+            + nowIso +'\', this);return false;">'+nowIso.substring(0,10)+'</a>'
         datebuttons.innerHTML += html;
         now.setDate(now.getDate() - 1);
     }
 
     // init all global variables for the current date
-    function init_vars(dateIso) {
+    function init_vars(dateIso, ele) {
+        const elementlist = document.querySelectorAll('.daybutton');
+        for (var i = 0; i < elementlist.length; ++i) {
+            elementlist[i].classList.remove('active');
+        }
+        if (!ele) {ele = document.querySelector('.daybutton');}
+        ele.classList.add('active');
+
         const date = new Date(dateIso)
         const formattedDate = dateIso.replace(/[:T-]/g, '');
         today = formattedDate.substring(0, 8)
@@ -122,8 +154,14 @@
 
 
     // helper functions
-    function setCity(cc) {
+    function setCity(ele, cc) {
         city = cc
+        const elementlist = document.querySelectorAll('.citybutton');
+        for (var i = 0; i < elementlist.length; ++i) {
+            elementlist[i].classList.remove('active');
+        }
+        ele.classList.add('active');
+
     }
     function round5(x) {
         return Math.floor(x / 5) * 5;
@@ -149,31 +187,39 @@
 
     // change the image every xxx milliseconds
     function cycle( dummy = "") {
-
-
-        // Set your image
-        // console.log("file", filenr)
-        document.querySelector('#cb').src = get_filename(filenr);
-
-        // If you reach the end of the array set index to zero
-        // otherwise increment it
-
+        showImage();
+        // calculate nr of next image
         filenr = filenr -5;
         filenr = fixtime(filenr)
         if (filenr % 100 == 0) {
             console.log("TIMEVAL", filenr.toString(), filenr.toString().substring(8))
             document.getElementById("myRange").value = filenr.toString().substring(8) / 24
         }
-
         preload_image(get_filename(filenr))
-        setTimeout(cycle, 200, filenr);
+    }
+    function showImage() {
+        document.querySelector('#cb').src = get_filename(filenr);
+        const ff = filenr.toString()
+        output.innerHTML = `${ff.substr(6,2)}.${ff.substr(4,2)}.${ff.substr(0,4)} ${ff.substr(8,2)}:${ff.substr(10,2)} Uhr`;
     }
 
-    cycle();
+    // Start/Stop Regenradar Image Animation when mouse pressed
+    function startAnimation() {
+        inter = setInterval(cycle, 200);
+    }
+    function stopAnimation() {
+        clearInterval(inter);
+    }
+    startAnimation()
 
-
-    var slider = document.getElementById("myRange");
-    var output = document.getElementById("demo");
+    window.onmousedown = () => {
+        console.log("holding..")
+        stopAnimation()
+    }
+    window.onmouseup = () => {
+        console.log("released...")
+        startAnimation()
+    }
 
     // Update the current slider value (each time you drag the slider handle)
     slider.oninput = function() {
@@ -185,9 +231,8 @@
         var mytime = "" + today + "" +  zero + temptime
         mytime = fixtime(mytime)
 
-
         filenr = mytime
-        output.innerHTML = mytime;
+        showImage()
     }
 
     function getWeek(d){
