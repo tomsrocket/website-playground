@@ -15,5 +15,3 @@ echo
 wget https://www.dwd.de/DWD/wetter/radar/rad_brd_akt.jpg -O $DIRPATH$FILENAME_DE
 wget https://www.dwd.de/DWD/wetter/radar/rad_nrw_akt.jpg -O $DIRPATH$FILENAME_NRW
 
-
-du --max-depth=0 -h > public/regen/dirsize.txt
