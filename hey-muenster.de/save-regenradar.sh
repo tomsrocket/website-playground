@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NOWDATE=`date +"%Y%m%d%H%M"`
+NOWDATE=`date --date '-1 min' +"%Y%m%d%H%M"`
 FILENAME_DE=regen-de-$NOWDATE.jpg
 FILENAME_NRW=regen-nrw-$NOWDATE.jpg
 
@@ -15,3 +15,5 @@ echo
 wget https://www.dwd.de/DWD/wetter/radar/rad_brd_akt.jpg -O $DIRPATH$FILENAME_DE
 wget https://www.dwd.de/DWD/wetter/radar/rad_nrw_akt.jpg -O $DIRPATH$FILENAME_NRW
 
+
+du --max-depth=0 -h > public/regen/dirsize.txt
