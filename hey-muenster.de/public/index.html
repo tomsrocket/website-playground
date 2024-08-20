@@ -130,10 +130,11 @@
     var filenr = 0
     var imgpath = ""
     var city = "de"
-    var today = 0
+    var today = ""
     var mode = "regen"
     const slider = document.getElementById("myRange");
     const output = document.getElementById("demo");
+
 
     // show the total directory size used by regenradar images
     fetch('regen/dirsize.txt')
@@ -147,22 +148,37 @@
     // create the date buttons that call function init_vars($date)
     const datebuttons = document.getElementById("datebuttons")
     var now = new Date()
-    for (var ind = 0;ind<10; ind++) {
-        const nowIso = now.toISOString()
-        const html = '<a href="#" class="btn btn-outline-secondary daybutton" onclick="init_vars(\''
-            + nowIso +'\', this);return false;">'+nowIso.substring(0,10)+'</a>'
-        datebuttons.innerHTML += html;
-        now.setDate(now.getDate() - 1);
+    // we are treating date as UTC (default of "toIsoString" method),
+    // so substract the timezone offset
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset())
+
+    drawDateButtons(now)
+    init_vars(now.toISOString())
+
+    function drawDateButtons(date) {
+        var buttonDate = new Date(date)
+        for (var ind = 0;ind<10; ind++) {
+            const nowIso = buttonDate.toISOString()
+            const html = '<a href="#" class="btn btn-outline-secondary daybutton" '
+                + 'id="btn'+nowIso.substring(0,10).replace(/[:T-]/g, '')+'" ' + 'onclick="init_vars(\''
+                + nowIso +'\', this);return false;">'+nowIso.substring(0,10)+'</a>'
+            datebuttons.innerHTML += html;
+            buttonDate.setDate(buttonDate.getDate() - 1);
+        }
     }
 
-    // init all global variables for the current date
-    function init_vars(dateIso, ele) {
+    function setActiveDayButton(ele) {
         const elementlist = document.querySelectorAll('.daybutton');
         for (var i = 0; i < elementlist.length; ++i) {
             elementlist[i].classList.remove('active');
         }
-        if (!ele) {ele = document.querySelector('.daybutton');}
         ele.classList.add('active');
+    }
+
+    // init all global variables for the current date
+    function init_vars(dateIso, ele) {
+        if (!ele) {ele = document.querySelector('.daybutton');}
+        setActiveDayButton(ele)
 
         const date = new Date(dateIso)
         const formattedDate = dateIso.replace(/[:T-]/g, '');
@@ -173,14 +189,12 @@
         kweek = getWeek(date)
         imgpath = "regen/img/"+('00'+kweek).slice(-2)+"/"
         filenr = rounded5
+        updateSlider();
 
         console.log("INIT ", kweek, date, formattedDate, shortDate, rounded5 )
     }
 
-    init_vars(new Date().toISOString())
 
-
-    // helper functions
     function setCity(ele, cc) {
         if (cc == "wolken") {
             city = "de"
@@ -196,6 +210,7 @@
         ele.classList.add('active');
 
     }
+    // helper functions
     function round5(x) {
         // regen bilder gibts nur alle 5 minuten
         return Math.floor(x / 5) * 5;
@@ -210,9 +225,10 @@
         return imgpath + mode + "-"+city+"-" + mytime + ".jpg"
     }
 
-    function preload_image(im_url) {
+    function preload_image_and_404_check(im_url) {
         let img = new Image();
         img.src = im_url;
+        return img.height != 0;
     }
 
     function fixtime(mytime) {
@@ -232,15 +248,20 @@
         filenr = filenr -5;
         filenr = fixtime(filenr)
         if (filenr % 100 == 0) {
-            console.log("TIMEVAL", filenr.toString(), filenr.toString().substring(8))
-            document.getElementById("myRange").value = filenr.toString().substring(8) / 24
+            const button = `btn${filenr.toString().substring(0,8)}`
+            updateSlider()
         }
-        preload_image(get_filename(filenr))
+        preload_image_and_404_check(get_filename(filenr))
     }
     function showImage() {
         document.querySelector('#cb').src = get_filename(filenr);
         const ff = filenr.toString()
         output.innerHTML = `${ff.substr(6,2)}.${ff.substr(4,2)}.${ff.substr(0,4)} ${ff.substr(8,2)}:${ff.substr(10,2)} Uhr`;
+        if (today != ff.substr(0,8)) {
+            today = ff.substr(0,8)
+            const dd = new Date(`${ff.substr(0,4)}-${ff.substr(4,2)}-${ff.substr(6,2)}T${ff.substr(8,2)}:${ff.substr(10,2)}:00.000Z`);
+            init_vars(dd.toISOString(), document.getElementById(`btn${today}`))
+        }
     }
 
     // Start/Stop Regenradar Image Animation when mouse pressed
@@ -260,15 +281,18 @@
         console.log("released...")
         startAnimation()
     }
+    function updateSlider() {
+        document.getElementById("myRange").value = filenr.toString().substring(8) / 24
+    }
 
     // Update the current slider value (each time you drag the slider handle)
     slider.oninput = function() {
         var zero = ""
         var temptime = Math.floor( (this.value * 24) / 5) * 5
         if (temptime < 1000) {
-            zero = "0"
+            temptime = temptime.toString().padStart(4, '0')
         }
-        var mytime = "" + today + "" +  zero + temptime
+        var mytime = "" + today + "" +  temptime
         mytime = fixtime(mytime)
 
         filenr = mytime
