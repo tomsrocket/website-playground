@@ -191,7 +191,7 @@
         filenr = rounded5
         updateSlider();
 
-        console.log("INIT ", kweek, date, formattedDate, shortDate, rounded5 )
+        console.log("INIT, week: ", kweek, date, formattedDate, shortDate, rounded5 )
     }
 
 
@@ -248,7 +248,6 @@
         filenr = filenr -5;
         filenr = fixtime(filenr)
         if (filenr % 100 == 0) {
-            const button = `btn${filenr.toString().substring(0,8)}`
             updateSlider()
         }
         preload_image_and_404_check(get_filename(filenr))
@@ -258,9 +257,8 @@
         const ff = filenr.toString()
         output.innerHTML = `${ff.substr(6,2)}.${ff.substr(4,2)}.${ff.substr(0,4)} ${ff.substr(8,2)}:${ff.substr(10,2)} Uhr`;
         if (today != ff.substr(0,8)) {
-            today = ff.substr(0,8)
-            const dd = new Date(`${ff.substr(0,4)}-${ff.substr(4,2)}-${ff.substr(6,2)}T${ff.substr(8,2)}:${ff.substr(10,2)}:00.000Z`);
-            init_vars(dd.toISOString(), document.getElementById(`btn${today}`))
+            const dd = new Date(`${ff.substr(0,4)}-${ff.substr(4,2)}-${ff.substr(6,2)}T${ff.substr(8,2)}:${ff.substr(10,2)}`);
+            init_vars(dd.toISOString(), document.getElementById(`btn${ff.substr(0,8)}`))
         }
     }
 
